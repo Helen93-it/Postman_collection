@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "ddd0e20d-5ebc-4d05-9ace-dc7b7121edae",
+		"name": "test_task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15691142"
+	},
+	"item": [
+		{
+			"name": "get_key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"resp = pm.response.json()\r",
+							"pm.environment.set(\"token\", resp.access_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "external",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "all offline_access",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{email}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://auth.timetta.com/connect/token",
+					"protocol": "https",
+					"host": [
+						"auth",
+						"timetta",
+						"com"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "billingTypes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.timetta.com/odata/ProjectBillingTypes",
+					"protocol": "https",
+					"host": [
+						"api",
+						"timetta",
+						"com"
+					],
+					"path": [
+						"odata",
+						"ProjectBillingTypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"resp = pm.response.json()\r",
+							"pm.environment.set(\"id_project\", resp.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Alena Chyrko Ale\",\r\n    \"billingTypeId\":\"e87e0e6b-c034-45ac-8b74-bd0256f3f535\",\r\n    \"managerId\":\"bcd753cc-0b80-47ae-a471-6ff7f06010e1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.timetta.com/odata/Projects",
+					"protocol": "https",
+					"host": [
+						"api",
+						"timetta",
+						"com"
+					],
+					"path": [
+						"odata",
+						"Projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "organizations",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.timetta.com/odata/Organizations",
+					"protocol": "https",
+					"host": [
+						"api",
+						"timetta",
+						"com"
+					],
+					"path": [
+						"odata",
+						"Organizations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change_managerId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"managerId\":\"e22bf891-4857-4284-966b-0271db3bd1e7\",\r\n    \"organizationId\":\"76797ca0-dfdc-4138-967a-73eccfb9341c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.timetta.com/odata/Projects({{id_project}})",
+					"protocol": "https",
+					"host": [
+						"api",
+						"timetta",
+						"com"
+					],
+					"path": [
+						"odata",
+						"Projects({{id_project}})"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
